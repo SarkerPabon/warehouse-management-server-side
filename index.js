@@ -8,6 +8,7 @@ const app = express();
 
 // Database
 const { connectDB, getDb } = require("./db");
+const { ObjectId } = require("mongodb");
 let db;
 connectDB((err) => {
 	if (!err) {
@@ -39,11 +40,25 @@ app.get("/products", (req, res) => {
 
 app.post("/products", (req, res) => {
 	const product = req.body;
-	console.log(product);
+	console.log("Add Product: ", product);
 	db.collection("products")
 		.insertOne(product)
 		.then((result) => res.status(201).json(result))
 		.catch((err) =>
 			res.status(500).json({ error: "Could not create new document" })
 		);
+});
+
+app.get("/products/:id", (req, res) => {
+	console.log("Single Product Request Id: ", req.params.id);
+	if (ObjectId.isValid(req.params.id)) {
+		db.collection("products")
+			.findOne({ _id: ObjectId(req.params.id) })
+			.then((result) => res.status(200).json(result))
+			.catch((err) =>
+				res.status(500).json({ error: "Could not fetch the document" })
+			);
+	} else {
+		res.status(500).json({ error: "Not valid document ID" });
+	}
 });
