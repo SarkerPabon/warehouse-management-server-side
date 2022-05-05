@@ -39,9 +39,10 @@ app.get("/products", (req, res) => {
 
 app.post("/products", (req, res) => {
 	const product = req.body;
+	console.log(product);
 	db.collection("products")
 		.insertOne(product)
-		.then((result) => res.status.json(result))
+		.then((result) => res.status(201).json(result))
 		.catch((err) =>
 			res.status(500).json({ error: "Could not create new document" })
 		);
