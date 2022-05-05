@@ -62,3 +62,18 @@ app.get("/products/:id", (req, res) => {
 		res.status(500).json({ error: "Not valid document ID" });
 	}
 });
+
+app.patch("/products/:id", (req, res) => {
+	console.log("Updating Reuest ID: ", req.params.id);
+
+	if (ObjectId.isValid(req.params.id)) {
+		db.collection("products")
+			.updateOne({ _id: ObjectId(req.params.id) }, { $inc: { quantity: -1 } })
+			.then((result) => res.status(200).json(result))
+			.catch((err) =>
+				res.status(500).json({ error: "Could not update the document" })
+			);
+	} else {
+		res.status(500).json({ error: "Not valid document ID" });
+	}
+});
