@@ -36,3 +36,13 @@ app.get("/products", (req, res) => {
 			res.status(500).json({ error: "Could not fetch the documents" })
 		);
 });
+
+app.post("/products", (req, res) => {
+	const product = req.body;
+	db.collection("products")
+		.insertOne(product)
+		.then((result) => res.status.json(result))
+		.catch((err) =>
+			res.status(500).json({ error: "Could not create new document" })
+		);
+});
