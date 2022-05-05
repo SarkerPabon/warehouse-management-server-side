@@ -6,7 +6,15 @@ const port = process.env.PORT || 5000;
 
 const app = express();
 
-app.listen(port, () => console.log(`Server is running on port ${port}`));
+// Database
+const { connectDB, getDb } = require("./db");
+connectDB((err) => {
+	if (!err) {
+		app.listen(port, () => console.log(`Server is running on port ${port}`));
+
+		db = getDb();
+	}
+});
 
 // Middleware
 app.use(cors());
