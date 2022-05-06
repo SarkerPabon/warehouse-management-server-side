@@ -40,6 +40,7 @@ app.get("/products", (req, res) => {
 
 app.post("/products", (req, res) => {
 	const product = req.body;
+
 	console.log("Add Product: ", product);
 	db.collection("products")
 		.insertOne(product)
@@ -68,7 +69,10 @@ app.patch("/products/:id", (req, res) => {
 
 	if (ObjectId.isValid(req.params.id)) {
 		db.collection("products")
-			.updateOne({ _id: ObjectId(req.params.id) }, { $inc: { quantity: -1 } })
+			.updateOne(
+				{ _id: ObjectId(req.params.id) },
+				{ $inc: { quantity: -1, sold: 1 } }
+			)
 			.then((result) => res.status(200).json(result))
 			.catch((err) =>
 				res.status(500).json({ error: "Could not update the document" })
