@@ -2,13 +2,15 @@ const express = require("express");
 const cors = require("cors");
 require("dotenv").config();
 
+const { connectDB, getDb } = require("./db");
+const { ObjectId } = require("mongodb");
+
 const port = process.env.PORT || 5000;
 
 const app = express();
 
 // Database
-const { connectDB, getDb } = require("./db");
-const { ObjectId } = require("mongodb");
+
 let db;
 connectDB((err) => {
 	if (!err) {
@@ -40,7 +42,7 @@ app.get("/products", (req, res) => {
 
 app.post("/products", (req, res) => {
 	const product = req.body;
-
+	// console.log(product);
 	console.log("Add Product: ", product);
 	db.collection("products")
 		.insertOne(product)
