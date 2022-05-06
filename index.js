@@ -41,7 +41,7 @@ app.get("/products", (req, res) => {
 });
 
 app.get("/products/myProducts", (req, res) => {
-	const email = req.body;
+	const email = req.query;
 	console.log(email);
 	let products = [];
 
