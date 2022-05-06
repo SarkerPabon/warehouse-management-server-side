@@ -40,7 +40,7 @@ app.get("/products", (req, res) => {
 		);
 });
 
-app.get("/products/myItems", (req, res) => {
+app.get("/products/myProducts", (req, res) => {
 	const email = req.body;
 	console.log(email);
 	let products = [];
