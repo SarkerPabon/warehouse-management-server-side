@@ -40,6 +40,19 @@ app.get("/products", (req, res) => {
 		);
 });
 
+app.get("/products/limits", (req, res) => {
+	let products = [];
+
+	db.collection("products")
+		.find()
+		.limit(6)
+		.forEach((product) => products.push(product))
+		.then(() => res.status(200).json(products))
+		.catch((error) =>
+			res.status(500).json({ error: "Could not fetch the documents" })
+		);
+});
+
 app.get("/products/myProducts", (req, res) => {
 	const email = req.query;
 	console.log(email);
