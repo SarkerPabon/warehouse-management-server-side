@@ -1,6 +1,7 @@
 const express = require("express");
 const cors = require("cors");
 require("dotenv").config();
+const jwt = require("jsonwebtoken");
 
 const { connectDB, getDb } = require("./db");
 const { ObjectId } = require("mongodb");
@@ -26,6 +27,19 @@ app.use(express.json());
 
 app.get("/", (req, res) => {
 	res.send("Running Server");
+});
+
+// JWT
+app.post("/login", (req, res) => {
+	const email = req.body;
+	console.log("JWT: ", email);
+
+	const maxAge = 3 * 24 * 60 * 60;
+
+	const accessToken = jwt.sign(email, process.env.ACCESS_TOKEN_SECRET, {
+		expiresIn: maxAge,
+	});
+	res.send({ accessToken });
 });
 
 app.get("/products", (req, res) => {
@@ -97,6 +111,7 @@ app.patch("/products/:id/qty", (req, res) => {
 	console.log("Updating Reuest ID: ", req.params.id);
 
 	const { addQty } = req.body;
+	console.log(addQty);
 
 	if (ObjectId.isValid(req.params.id)) {
 		db.collection("products")
