@@ -36,10 +36,11 @@ function verifyJWT(req, res, next) {
 			return res.status(403).send({ message: "Forbidden Access" });
 		}
 
-		console.log("Decoded: ", decoded);
+		// console.log("Decoded: ", decoded);
 		req.decoded = decoded;
 	});
 
+	// console.log("Inside VerifyJWT: ", authHeader);
 	next();
 }
 
@@ -92,10 +93,11 @@ app.get("/products/limits", (req, res) => {
 app.get("/products/myProducts", verifyJWT, (req, res) => {
 	const email = req.query;
 	const decodedEmail = req.decoded.email;
-	console.log("Email: ", email);
-	console.log("Decoded Email: ", decodedEmail);
 
-	if (email === decodedEmail) {
+	// console.log("Email: ", email.email);
+	// console.log("Decoded Email: ", decodedEmail);
+
+	if (email.email === decodedEmail) {
 		let products = [];
 
 		db.collection("products")
