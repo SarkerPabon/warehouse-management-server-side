@@ -95,19 +95,19 @@ app.get("/products/myProducts", verifyJWT, (req, res) => {
 	console.log("Email: ", email);
 	console.log("Decoded Email: ", decodedEmail);
 
-	if (email !== decodedEmail) {
-		res.status(403).send({ message: "Forbidden Access" });
+	if (email === decodedEmail) {
+		let products = [];
+
+		db.collection("products")
+			.find(email)
+			.forEach((product) => products.push(product))
+			.then(() => res.status(200).json(products))
+			.catch((error) =>
+				res.status(500).json({ error: "Could not fetch the documents" })
+			);
+	} else {
+		res.status(403).send({ message: "Forbidden Message" });
 	}
-
-	let products = [];
-
-	db.collection("products")
-		.find(email)
-		.forEach((product) => products.push(product))
-		.then(() => res.status(200).json(products))
-		.catch((error) =>
-			res.status(500).json({ error: "Could not fetch the documents" })
-		);
 });
 
 app.post("/products", (req, res) => {
