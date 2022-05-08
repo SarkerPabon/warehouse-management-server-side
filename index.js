@@ -36,11 +36,11 @@ function verifyJWT(req, res, next) {
 			return res.status(403).send({ message: "Forbidden Access" });
 		}
 
-		// console.log("Decoded: ", decoded);
+		console.log("Decoded: ", decoded);
 		req.decoded = decoded;
 	});
 
-	// console.log("Inside VerifyJWT: ", authHeader);
+	console.log("Inside VerifyJWT: ", authHeader);
 	next();
 }
 
