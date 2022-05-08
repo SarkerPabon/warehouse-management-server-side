@@ -93,6 +93,26 @@ app.get("/products/:id", (req, res) => {
 	}
 });
 
+app.patch("/products/:id/qty", (req, res) => {
+	console.log("Updating Reuest ID: ", req.params.id);
+
+	const { addQty } = req.body;
+
+	if (ObjectId.isValid(req.params.id)) {
+		db.collection("products")
+			.updateOne(
+				{ _id: ObjectId(req.params.id) },
+				{ $inc: { quantity: addQty } }
+			)
+			.then((result) => res.status(200).json(result))
+			.catch((err) =>
+				res.status(500).json({ error: "Could not update the document" })
+			);
+	} else {
+		res.status(500).json({ error: "Not valid document ID" });
+	}
+});
+
 app.patch("/products/:id", (req, res) => {
 	console.log("Updating Reuest ID: ", req.params.id);
 
